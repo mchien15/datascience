@@ -1,12 +1,15 @@
 # Find similar players using Cosine and KNN
 
+## To run on Streamlit server
+Click this [link](https://datascience-cvxlqzzers7ydppnahpgbf.streamlit.app/)
+
 ## To run locally
 
 ### Required packages
 Run this line to install the required packages
 
 ```
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 
 ### Data processing
