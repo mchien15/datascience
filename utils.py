@@ -41,22 +41,15 @@ def load_data():
 
 def get_similar_players_cosine(df, similarity_df, player_name, top_n=10):
     similarity_scores = similarity_df[player_name]
-
     most_similar_players = similarity_scores.sort_values(ascending=False).head(top_n + 1)
-
     most_similar_players = most_similar_players[most_similar_players.index != player_name]
 
     similar_players_df = pd.DataFrame(most_similar_players).join(df.set_index('Name')[['Pos', 'Squad']])
-
-    similar_players_df.reset_index(inplace=True)  # Reset the index
-
-    similar_players_df.columns = ['Name', 'Similarity', 'Position', 'Squad']  # Add 'Name' column
-
-    similar_players_df.sort_values(by='Similarity', ascending=False, inplace=True)  # Sort by similarity scores
-
-    similar_players_df.reset_index(drop=True, inplace=True)  # Reindex from 0 to top_n
-
-    similar_players_df.index += 1  # Reindex from 1 to top_n
+    similar_players_df.reset_index(inplace=True)
+    similar_players_df.columns = ['Name', 'Similarity', 'Position', 'Squad']
+    similar_players_df.sort_values(by='Similarity', ascending=False, inplace=True)
+    similar_players_df.reset_index(drop=True, inplace=True) 
+    similar_players_df.index += 1
 
     return similar_players_df
 
@@ -85,28 +78,27 @@ def get_similar_players_knn(df, player_name, top_n=10):
 
 def compare_players(df, player1, player2):
     positions_set = ast.literal_eval(df[df['Name'] == player1]['Pos'].values[0])
-    params = list(positions_set)[0]
+    position = list(positions_set)[0]
 
-    if params not in stats_to_compare:
-        print(f"Position '{params}' is not available for comparison.")
+    if position not in stats_to_compare:
+        print(f"Position '{position}' is not available for comparison.")
         return None
 
-    value1 = df[df['Name'] == player1][stats_to_compare[params]].values
-    value2 = df[df['Name'] == player2][stats_to_compare[params]].values
+    value1 = df[df['Name'] == player1][stats_to_compare[position]].values
+    value2 = df[df['Name'] == player2][stats_to_compare[position]].values
 
     values = [value1[0], value2[0]]
 
-    #get the range of values for each column in cols
     ranges = []
-    for col in stats_to_compare[params]:
+    for col in stats_to_compare[position]:
         ranges.append([df[col].min(), df[col].max()])
 
     title = dict(
-        title_name=player1 + ' - ' + params,
+        title_name=player1 + ' - ' + position,
         title_color='#B6282F',
         subtitle_name=df[df['Name'] == player1]['Squad'].values[0],
         subtitle_color='#B6282F',
-        title_name_2=player2 + ' - ' + params,
+        title_name_2=player2 + ' - ' + position,
         title_color_2='#344D94',
         subtitle_name_2=df[df['Name'] == player2]['Squad'].values[0],
         subtitle_color_2='#344D94',
@@ -116,7 +108,7 @@ def compare_players(df, player1, player2):
 
     radar = Radar()
 
-    fig, ax = radar.plot_radar(ranges=ranges, params=stats_to_compare[params], values=values, 
+    fig, ax = radar.plot_radar(ranges=ranges, params=stats_to_compare[position], values=values, 
                             radar_color=['#B6282F', '#344D94'], 
                             title=title,
                             compare=True)
