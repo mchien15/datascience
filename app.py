@@ -129,7 +129,7 @@ st.title("Player Similarity (2020/2021 Season)")
 
 df, scaled_df, similarity_df = load_data()
 
-player_name = st.selectbox('Select a player', scaled_df['Name'].unique())
+player_name = st.selectbox('Select a player', scaled_df['Name'].unique(), index=scaled_df['Name'].unique().tolist().index('Harry Kane'))
 
 top_n = st.slider('Select number of similar players to display', min_value=1, max_value=10, value=10)
 
