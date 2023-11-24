@@ -30,15 +30,16 @@ def load_data():
     numerical_cols = numerical_cols[numerical_cols != 'Min']
 
     scaler = StandardScaler()
-    df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
+    scaled_df = df.copy()
+    scaled_df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
 
-    vector_embeddings = df[numerical_cols].values
+    vector_embeddings = scaled_df[numerical_cols].values
 
     similarity_matrix = cosine_similarity(vector_embeddings)
 
-    similarity_df = pd.DataFrame(similarity_matrix, index=df['Name'], columns=df['Name'])
+    similarity_df = pd.DataFrame(similarity_matrix, index=scaled_df['Name'], columns=scaled_df['Name'])
 
-    return df, similarity_df
+    return df, scaled_df, similarity_df
 
 def get_similar_players_cosine(df, similarity_df, player_name, top_n=10):
     similarity_scores = similarity_df[player_name]
@@ -126,13 +127,13 @@ def compare_players(df, player1, player2):
 
 st.title("Player Similarity (2020/2021 Season)")
 
-df, similarity_df = load_data()
+df, scaled_df, similarity_df = load_data()
 
-player_name = st.selectbox('Select a player', df['Name'].unique())
+player_name = st.selectbox('Select a player', scaled_df['Name'].unique())
 
 top_n = st.slider('Select number of similar players to display', min_value=1, max_value=10, value=10)
 
-similar_players_cosine = get_similar_players_cosine(df, similarity_df, player_name, top_n)
+similar_players_cosine = get_similar_players_cosine(scaled_df, similarity_df, player_name, top_n)
 # similar_players_knn = get_similar_players_knn(df, player_name, top_n)
 
 def on_more_click(show_more, idx):
@@ -146,7 +147,7 @@ if "show_more" not in st.session_state:
     st.session_state["show_more"] = dict.fromkeys(range(top_n), False)
 show_more = st.session_state["show_more"]
 
-similar_players_cosine = get_similar_players_cosine(df, similarity_df, player_name, top_n)
+similar_players_cosine = get_similar_players_cosine(scaled_df, similarity_df, player_name, top_n)
 st.write("Similar Players (Cosine Similarity):")
 
 colms = st.columns(6)
