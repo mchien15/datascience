@@ -35,7 +35,8 @@ def process_dataframe(df):
     
     test = df.groupby(['Name', 'Squad', 'Min_y']).agg({
         'Min_x': 'sum',
-        'Pos': lambda x: set([item for sublist in x for item in sublist]),
+        # 'Pos': lambda x: set([item for sublist in x for item in sublist]),
+        'Pos': 'first',
         **{col: 'sum' for col in numeric_columns},
         **{col: 'mean' for col in percentage_columns}
     }).reset_index()
