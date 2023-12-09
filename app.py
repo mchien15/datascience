@@ -38,7 +38,7 @@ for i, name in enumerate(similar_players_cosine['Name']):
     
     col1.write(i + 1)
     col2.write(name)
-    col3.write(similar_players_cosine[similar_players_cosine['Name'] == name]['Position'].values[0])
+    col3.write(str(similar_players_cosine[similar_players_cosine['Name'] == name]['Position'].values[0]))
     col4.write(similar_players_cosine[similar_players_cosine['Name'] == name]['Squad'].values[0])
     col5.write(f"{similar_players_cosine[similar_players_cosine['Name'] == name]['Similarity'].values[0]:.3f}")
 

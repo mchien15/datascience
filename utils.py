@@ -5,6 +5,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import NearestNeighbors
 from soccerplots.radar_chart import Radar
+from prc import process_data
 import ast
 
 stats_to_compare = {'FW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PassProg', 'AttPen', 'KP', 'PPA', 'Succ%', 'CPA', 'TacklesAtt3rd', 'Press'],
@@ -22,7 +23,8 @@ stats_to_compare = {'FW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PassProg', 'AttPen',
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv('all_processed.csv')
+    # df = pd.read_csv('all_processed.csv')
+    df = process_data()
 
     numerical_cols = df.select_dtypes(include=['float64', 'int64']).columns
     numerical_cols = numerical_cols[numerical_cols != 'Min']
@@ -77,8 +79,10 @@ def get_similar_players_knn(df, player_name, top_n=10):
     return similar_players_df
 
 def compare_players(df, player1, player2):
-    positions_set = ast.literal_eval(df[df['Name'] == player1]['Pos'].values[0])
-    position = list(positions_set)[0]
+    # positions_set = ast.literal_eval(df[df['Name'] == player1]['Pos'].values[0])
+    # position = list(positions_set)[0]
+
+    position = df[df['Name'] == player1]['Pos'].values[0][0]
 
     if position not in stats_to_compare:
         print(f"Position '{position}' is not available for comparison.")
