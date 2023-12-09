@@ -10,6 +10,8 @@ git clone https://github.com/mchien15/datascience.git
 pip install -r requirements.txt
 ```
 
+This application also requires `Docker`, so if you haven't already installed it on your computer, please follow this [INTRUCTION](https://docs.docker.com/engine/install/)
+
 ## Prepare the data
 
 ### Start our data lake infrastructure
