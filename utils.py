@@ -95,8 +95,9 @@ def compare_players(df, player1, player2):
 
     ranges = []
     for col in stats_to_compare[position]:
-        ranges.append([df[col].min(), df[col].max()])
-
+        # ranges.append([df[col].min(), df[col].max()])
+        ranges.append([df[df['Pos'].str[0] == position][col].min(), df[df['Pos'].str[0] == position][col].max()])
+        
     title = dict(
         title_name=player1 + ' - ' + position,
         title_color='#B6282F',
