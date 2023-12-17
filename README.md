@@ -4,6 +4,7 @@
 ```
 git clone https://github.com/mchien15/datascience.git
 ```
+then navigate to repo's folder
 
 ## Install required packages
 ```
@@ -29,7 +30,7 @@ After pushing your files to `MinIO`, please run the following command to execute
 docker exec -ti datalake-trino bash
 ```
 
-When you are already inside the `trino` container, type `trino` to enter the interactive mode
+When you are already inside the `trino` container, run `trino` to enter the interactive mode
 
 After that, run the following command to register a new schema for the data:
 
