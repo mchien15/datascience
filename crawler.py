@@ -64,11 +64,11 @@ def get_player_name(path):
         'f5b64cb1':'Santa-Clara'
     }
 
-    for team in primeira_liga_dict:
+    for team in laliga_dict:
         for year in seasons:
             try:
-                browser.get('https://fbref.com/en/squads/'+team+'/'+year+'/'+primeira_liga_dict[team]+'-Stats')
-                tbody = browser.find_element(By.XPATH, '//*[@id="stats_standard_32"]/tbody')
+                browser.get('https://fbref.com/en/squads/'+team+'/'+year+'/'+laliga_dict[team]+'-Stats')
+                tbody = browser.find_element(By.XPATH, '//*[@id="stats_standard_12"]/tbody')
 
                 elements = tbody.find_elements(By.TAG_NAME, 'tr')
                 for element in elements:
@@ -79,7 +79,7 @@ def get_player_name(path):
                         continue
                     player[id] = name1
             except:
-                print("Invalid Team", primeira_liga_dict[team])
+                print("Invalid Team", laliga_dict[team])
     browser.quit()
     return player
 

@@ -8,3 +8,4 @@ fastparquet==2023.8.0
 minio==7.1.16
 PyYAML==6.0.1
 trino==0.327.0
+plotly==5.18.0
