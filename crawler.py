@@ -10,88 +10,65 @@ def get_player_name(path):
     browser = webdriver.Chrome(service=Service(path))
     player = {}
 
-    seasons = ['2022-2023','2021-2022','2020-2021']
-    # seasons = ['2022-2023']
-    
+    seasons = ['2022-2023','2023-2024']
+
     # cái này điền ID và tên của team, ID lấy từ trên web, cứu search tên đội ra là nó có thêm ID ở URL
     # dấu cách thì thay bằng dấu gạch ngang 
-
-   #  EPL_dict = {
-   # '361ca564':'Totenham-Hotspur',
-   # 'd3fd31cc':'Everton',
-   # '822bd0ba':'Liverpool',
-   # 'cff3d9bb':'Chelsea',
-   # '47c64c55':'Crystal-Palace',
-   # '19538871':'Manchester-United',
-   # '5bfb9659':'Leeds-United',
-   # '33c895d4':'Southampton',
-   # 'b8fd03ef':'Manchester-City',
-   # '7c21e445':'West-Ham-United',
-   # 'a2d435b3':'Leicester-City',
-   # '8cec06e1':'Wolverhampton-Wanderers',
-   # 'd07537b9':'Brighton-and-Hove-Albion',
-   # '18bb7c10':'Arsenal',
-   # 'cd051869':'Brentford',
-   # '943e8050':'Burnley',
-   # '1c781004':'Norwich-City',
-   # '2abfe087':'Watford',
-   #  'b2b47a98':'Newcastle-United',
-   #  '8602292d':'Aston-Villa'
-# }
-    
-    Laliga_dict = {
+    laliga_dict = {
    '9024a00a':'Girona',
    '53a2f082':'Real-Madrid',
-   '206d90db':'Barcelona',
    'db3b9613':'Atletico-Madrid',
+   '206d90db':'Barcelona',
    '2b390eca':'Athletic-Club',
    'e31d1cd9':'Real-Sociedad',
    'fc536746':'Real-Betis',
    '0049d422':'Las-Palmas',
-   'dcc91a7b':'Valencia',
-   '98e8af82':'Rayo-Vallecano',
    '7848bd64':'Getafe',
+   '98e8af82':'Rayo-Vallecano',
+   'dcc91a7b':'Valencia',
    '03c57e2b':'Osasuna',
-   'ad2be733':'Sevilla',
-   '2a8183b3':'Villarreal',
    '8d6fd021':'Alaves',
-   'ee7c297c':'Cadiz',
+   '2a8183b3':'Villarreal',
    '2aa12281':'Mallorca',
+   'ad2be733':'Sevilla',
+   'ee7c297c':'Cadiz',
    'f25da7fb':'Celta-Vigo',
     'a0435291':'Granada',
     '78ecf4bb':'Almeria',
     '17859612':'Valladolid',
     'a8661628':'Espanyol',
-    '6c8b07df':'Elche',
-    '9800b6a1':'Levante',
-    'c6c493e6':'Huesca',
-    'bea5c710':'Eibar'
+    '6c8b07df':'Elche'
 }
     
-    # for team in EPL_dict:
-    #     for year in seasons:
-    #         try:
-    #             browser.get('https://fbref.com/en/squads/'+team+'/'+year+'/'+EPL_dict[team]+'-Stats')
-    #             tbody = browser.find_element(By.XPATH, '//*[@id="stats_standard_9"]/tbody')
+    primeira_liga_dict = {
+        '13dc44fd':'Sporting-CP',
+        '5e876ee6':'Porto',
+        'a77c513e':'Benfica',
+        '69d84c29':'Braga',
+        '3f319bc9':'Vitoria-Guimaraes',
+        'e4502862':'Moreirense',
+        '489c9cd9':'Farense',
+        '2de656d5':'Famalicao',
+        '0cb9f756':'Estrela',
+        '37b7e9e2':'Boavista',
+        'a549d6c6':'Portimonense',
+        '00c41b75':'Estoril',
+        'b20a2b76':'Casa-Pia',
+        '6a329209':'Gil-Vicente-FC',
+        'eea856da':'Rio-Ave',
+        'bf4e8a13':'Chaves',
+        'b9daacef':'Vizela',
+        '0d36ddd4':'Arouca',
+        'c1b0f61b':'Maritimo',
+        'f6af6f6f':'Pacos-de-Ferreira',
+        'f5b64cb1':'Santa-Clara'
+    }
 
-    #             elements = tbody.find_elements(By.TAG_NAME, 'tr')
-    #             for element in elements:
-    #                 element2 = element.find_element(By.TAG_NAME, 'th')
-    #                 id = element2.get_attribute('data-append-csv')
-    #                 name1 = element2.get_attribute('csk')
-    #                 if id == None or name1 == None:
-    #                     continue
-    #                 player[id] = name1
-    #         except:
-    #             print("Invalid Team", EPL_dict[team])
-    # browser.quit()
-    # return player
-
-    for team in Laliga_dict:
+    for team in primeira_liga_dict:
         for year in seasons:
             try:
-                browser.get('https://fbref.com/en/squads/'+team+'/'+year+'/'+Laliga_dict[team]+'-Stats')
-                tbody = browser.find_element(By.XPATH, '//*[@id="stats_standard_12"]/tbody')
+                browser.get('https://fbref.com/en/squads/'+team+'/'+year+'/'+primeira_liga_dict[team]+'-Stats')
+                tbody = browser.find_element(By.XPATH, '//*[@id="stats_standard_32"]/tbody')
 
                 elements = tbody.find_elements(By.TAG_NAME, 'tr')
                 for element in elements:
@@ -102,20 +79,20 @@ def get_player_name(path):
                         continue
                     player[id] = name1
             except:
-                print("Invalid Team", Laliga_dict[team])
+                print("Invalid Team", primeira_liga_dict[team])
     browser.quit()
     return player
 
 def crawl_player(player,player_file_name):
     print('Crawling...')
-    seasons = ['2022-2023','2021-2022','2020-2021']
-    # seasons = ['2022-2023']
+    seasons = ['2022-2023','2021-2022']
     for i in player:
         for year in seasons:
             player_link = 'https://fbref.com/en/players/'+i+'/matchlogs/'+year+'/keeper/'+i+'-Match-Logs'
             new_player_link = player_link.replace("keeper", "passing")
             try:
                 df = pd.read_html(new_player_link, header=1)[0]
+                df['ID'] = i
                 df = df.drop(columns=['Match Report'])
                 df = df.drop(columns=['Comp'], errors = 'ignore')
                 df = df.rename(columns={"Day": "Name"})
@@ -284,8 +261,7 @@ def crawl_player(player,player_file_name):
                 print("Invalid Outfield Player", player[i])
 
 if __name__ == "__main__":
-    path = 'chromedriver'
-    player_file_name = "/home/asus/stuDYING/IT/DataScience/project/laliga_20_23.csv"
+    path = '/home/asus/stuDYING/IT/DataScience/project/chromedriver'
+    player_file_name = '/home/asus/stuDYING/IT/DataScience/data/playerstats_primeira_liga.csv'
     player = get_player_name(path)
     crawl_player(player,player_file_name)
-    print("_____DONE_____")
