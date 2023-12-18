@@ -6,7 +6,7 @@ from unidecode import unidecode
 def process_dataframe(df):
     pd.set_option('display.max_columns', None)
     
-    percentage_columns = ['Cmp%', 'Cmp%.1', 'Cmp%.2', 'Cmp%.3', 'DribTackled%', 'SuccPress%', 'Succ%', 'Rec%']
+    percentage_columns = ['CmpPct', 'CmpPct1', 'CmpPct2', 'CmpPct3', 'DribTackledPct', 'SuccPressPct', 'SuccPct', 'RecPct']
     to_delete_columns = ['Round', 'Venue', 'Result', 'Opponent', 'Start']
     
     df = df.fillna(0)
@@ -52,7 +52,6 @@ def process_dataframe(df):
     #apply unidecode to remove all the accent in the name
     processed_df['Name'] = processed_df['Name'].apply(lambda x: unidecode(x))
 
-    #make hashing of each player by name and squad and add it as the first column
     processed_df.insert(0, 'player_id', processed_df['Name'].astype(str) + processed_df['Squad'].astype(str))
     processed_df['player_id'] = processed_df['player_id'].apply(lambda x: hashlib.md5(x.encode()).hexdigest())
     

@@ -11,18 +11,18 @@ import plotly.subplots as sp
 import plotly.graph_objects as go
 import plotly.express as px
 
-stats_to_compare = {'FW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PassProg', 'AttPen', 'KP', 'PPA', 'Succ%', 'CPA', 'TacklesAtt3rd', 'Press'],
-                    'WB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'Cmp%', 'PassProg', 'ProgCarries', 'Succ%', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'RB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'Cmp%', 'PassProg', 'ProgCarries', 'Succ%', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'LB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'Cmp%', 'PassProg', 'ProgCarries', 'Succ%', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'CB': ['PassAtt', 'Cmp%', 'PassProg', 'ProgCarries', 'Cmp%.3', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'DM': ['PassAtt', 'Cmp%', 'PassProg', 'PassFinThird', 'KP', 'ProgCarries', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'CM': ['npxG', 'xA', 'SCA', 'Sh', 'PassAtt', 'Cmp%', 'PassProg', 'PassFinThird', 'KP', 'ProgCarries', 'Succ%', 'CPA', 'Int', 'TklW', 'Blocks', 'TacklesMid3rd'],
-                    'AM': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PassAtt', 'Cmp%', 'PassProg', 'KP', 'ProgCarries', 'PPA', 'Succ%', 'CPA', 'AttPen', 'TacklesAtt3rd', 'Press'],
-                    'LM': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'Cmp%', 'KP', 'ProgCarries', 'PPA', 'Succ%', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
-                    'RM': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'Cmp%', 'KP', 'ProgCarries', 'PPA', 'Succ%', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
-                    'RW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'Cmp%', 'KP', 'ProgCarries', 'PPA', 'Succ%', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
-                    'LW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'Cmp%', 'KP', 'ProgCarries', 'PPA', 'Succ%', 'CPA', 'Att', 'TacklesAtt3rd', 'Press']}
+stats_to_compare = {'FW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PassProg', 'AttPen', 'KP', 'PPA', 'SuccPct', 'CPA', 'TacklesAtt3rd', 'Press'],
+                    'WB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PassProg', 'ProgCarries', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'RB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PassProg', 'ProgCarries', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'LB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PassProg', 'ProgCarries', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'CB': ['PassAtt', 'CmpPct', 'PassProg', 'ProgCarries', 'CmpPct3', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'DM': ['PassAtt', 'CmpPct', 'PassProg', 'PassFinThird', 'KP', 'ProgCarries', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'CM': ['npxG', 'xA', 'SCA', 'Sh', 'PassAtt', 'CmpPct', 'PassProg', 'PassFinThird', 'KP', 'ProgCarries', 'SuccPct', 'CPA', 'Int', 'TklW', 'Blocks', 'TacklesMid3rd'],
+                    'AM': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PassAtt', 'CmpPct', 'PassProg', 'KP', 'ProgCarries', 'PPA', 'SuccPct', 'CPA', 'AttPen', 'TacklesAtt3rd', 'Press'],
+                    'LM': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'ProgCarries', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
+                    'RM': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'ProgCarries', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
+                    'RW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'ProgCarries', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
+                    'LW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'ProgCarries', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press']}
 
 
 @st.cache_data
@@ -211,7 +211,7 @@ def plot_percentiles(df, player_name='Harry Kane'):
 
 def plot_violin_and_scatter(df, metric_1, metric_2):
 
-    fig = plotly.tools.make_subplots(rows=2, cols=2, subplot_titles=("Violin Plot 1", "Scatter Plot", "", "Violin Plot 2"))
+    fig = plotly.subplots.make_subplots(rows=2, cols=2, subplot_titles=(f"Violin Plot for '{metric_2}'", "Scatter Plot", "", f"Violin Plot for '{metric_1}'"))
 
     fig_scatter = px.scatter(df,
                     x=metric_1, y=metric_2,
