@@ -1,40 +1,3 @@
-# Find similar players using Cosine similarity
-
-## Clone the repo
-```
-git clone https://github.com/mchien15/datascience.git
-```
-then navigate to repo's folder
-
-## Install required packages
-```
-pip install -r requirements.txt
-```
-
-This application also requires `Docker`, so if you haven't already installed it on your computer, please follow this [INTRUCTION](https://docs.docker.com/engine/install/)
-
-## Prepare the data
-
-### Start our data lake infrastructure
-```
-docker compose -f docker-compose.yml up -d
-```
-### Generate data and push them to MinIO
-```
-python utils/export_data_to_datalake.py
-```
-
-### Create data schema
-After pushing your files to `MinIO`, please run the following command to execute the trino container:
-```
-docker exec -ti datalake-trino bash
-```
-
-When you are already inside the `trino` container, run `trino` to enter the interactive mode
-
-After that, run the following command to register a new schema for the data:
-
-```sql
 CREATE SCHEMA IF NOT EXISTS datalake.data_big_5_leagues
 WITH (location = 's3://data-big-5-leagues/');
 
@@ -144,16 +107,3 @@ CREATE TABLE IF NOT EXISTS datalake.data_big_5_leagues.all_leagues (
     external_location = 's3://data-big-5-leagues/players/',
     format = 'PARQUET'
 );
-
-```
-
-
-## Run the Streamlit app
-
-Open the new terminal or type `exit` twice, then run this command
-
-```
-streamlit run Hello.py
-```
-
-Visit the URL displayed in the terminal (usually http://localhost:8501) to interact with the app

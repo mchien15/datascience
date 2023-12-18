@@ -6,8 +6,10 @@ from sklearn.neighbors import NearestNeighbors
 from soccerplots.radar_chart import Radar
 from prc import process_data
 from features_meaning import dict_metric, type_of_stats
+import plotly
 import plotly.subplots as sp
 import plotly.graph_objects as go
+import plotly.express as px
 
 stats_to_compare = {'FW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PassProg', 'AttPen', 'KP', 'PPA', 'Succ%', 'CPA', 'TacklesAtt3rd', 'Press'],
                     'WB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'Cmp%', 'PassProg', 'ProgCarries', 'Succ%', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
@@ -80,11 +82,13 @@ def get_similar_players_knn(df, player_name, top_n=10):
 
     return similar_players_df
 
-def compare_players(df, player1, player2):
+def compare_players(df, player1, player2, pos=None):
     # positions_set = ast.literal_eval(df[df['Name'] == player1]['Pos'].values[0])
     # position = list(positions_set)[0]
-
-    position = df[df['Name'] == player1]['Pos'].values[0][0]
+    if pos == None:
+        position = df[df['Name'] == player1]['Pos'].values[0][0]
+    else:
+        position = pos
 
     if position not in stats_to_compare:
         print(f"Position '{position}' is not available for comparison.")
@@ -193,7 +197,7 @@ def plot_percentiles(df, player_name='Harry Kane'):
         bargroupgap=0.05,
         font=dict(
             family="Arial",
-            size=14,
+            size=18,
             color="black"
         )
     )
@@ -202,5 +206,46 @@ def plot_percentiles(df, player_name='Harry Kane'):
         trace['showlegend'] = False
 
     fig.update_yaxes(automargin='left+right')
+
+    return fig
+
+def plot_violin_and_scatter(df, metric_1, metric_2):
+
+    fig = plotly.tools.make_subplots(rows=2, cols=2, subplot_titles=("Violin Plot 1", "Scatter Plot", "", "Violin Plot 2"))
+
+    fig_scatter = px.scatter(df,
+                    x=metric_1, y=metric_2,
+                    hover_name='Name',
+                    color='Pos',
+                    symbol='Pos',
+                    size='Min', 
+                    width=1800, height=800,)
+
+    fig_violin_1 = px.violin(df[metric_1], orientation='h', points='all')
+
+    fig_violin_2 = px.violin(df[metric_2], points='all')
+
+    fig.add_traces(fig_violin_1.data, 2, 2)
+
+    fig.add_traces(fig_violin_2.data, 1, 1)
+
+    fig.add_traces(fig_scatter.data, 1, 2)
+
+    fig.update_layout(
+        height=1000,
+        width=1600,
+        bargap=0.05,
+        bargroupgap=0.05,
+        font=dict(
+            family="Arial",
+            size=18,
+            color="black"
+        )
+    )
+
+    fig['layout']['xaxis2']['title']=metric_2
+    fig['layout']['yaxis2']['title']=metric_1
+
+    fig.update_yaxes(automargin=True)
 
     return fig
