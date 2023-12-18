@@ -6,15 +6,23 @@ st.set_page_config(layout="wide")
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-st.title("Player Similarity")
-
-outer_cols = st.columns([30,30], gap='large')
+st.title("Scouting Report and Similar Players Finder")
 
 df, scaled_df, similarity_df = load_data()
 
 player_name = st.sidebar.selectbox('Select a player', scaled_df['Name'].unique(), index=scaled_df['Name'].unique().tolist().index('Harry Kane'))
 
 top_n = st.sidebar.slider('Select number of similar players to display', min_value=1, max_value=10, value=10)
+
+position = str(df[df['Name'] == player_name]['Pos'].values[0][0])
+
+squad = str(df[df['Name'] == player_name]['Squad'].values[0])
+
+st.header('')
+
+st.header(f'{player_name} - {position} - {squad}')
+
+outer_cols = st.columns([30,30], gap='large')
 
 similar_players_cosine = get_similar_players_cosine(scaled_df, similarity_df, player_name, top_n)
 # similar_players_knn = get_similar_players_knn(df, player_name, top_n)

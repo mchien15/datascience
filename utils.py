@@ -25,7 +25,7 @@ stats_to_compare = {'FW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PassProg', 'AttPen',
 
 @st.cache_data
 def load_data():
-    # df = pd.read_csv('all_processed.csv')
+
     df = process_data()
 
     numerical_cols = df.select_dtypes(include=['float64', 'int64']).columns
@@ -97,7 +97,6 @@ def compare_players(df, player1, player2):
 
     ranges = []
     for col in stats_to_compare[position]:
-        # ranges.append([df[col].min(), df[col].max()])
         ranges.append([df[df['Pos'].str[0] == position][col].min(), df[df['Pos'].str[0] == position][col].max()])
         
     title = dict(
@@ -158,25 +157,18 @@ def plot_percentiles(df, player_name='Harry Kane'):
     possession_stats = type_of_stats['Possession']
     summary_stats = type_of_stats['Summary']
 
-    # Filter the DataFrame for each major type
     passing_df = df_player_pr_t[df_player_pr_t['Stats'].isin(passing_stats)]
     goal_df = df_player_pr_t[df_player_pr_t['Stats'].isin(goal_stats)]
     defensive_df = df_player_pr_t[df_player_pr_t['Stats'].isin(defensive_stats)]
     possession_df = df_player_pr_t[df_player_pr_t['Stats'].isin(possession_stats)]
     summary_df = df_player_pr_t[df_player_pr_t['Stats'].isin(summary_stats)]
 
-    # Calculate the maximum number of features among all subplots
-    # max_features = max(len(summary_stats), len(passing_stats), len(goal_stats), len(defensive_stats), len(possession_stats))
-
-    # Calculate the width of the bars based on the maximum number of features
     bar_width = 0.03
 
     # row_heights=[0.5, 0.8, 0.8, 0.7, 0.8]
 
-    # Add the subplots to the big plot with updated row_heights
     fig = sp.make_subplots(rows=5, cols=1, shared_xaxes=True, vertical_spacing=0.02, subplot_titles=('Summary Stats', 'Passing Stats', 'Goal and Shot Creation Stats', 'Defensive Action Stats', 'Possession Stats'))
 
-    # Add the subplots to the big plot
     fig.add_trace(go.Bar(x=summary_df['PR'], y=summary_df['Metric'], orientation='h',
                         width=bar_width*len(summary_stats),
                         marker=dict(color=summary_df['PR'], coloraxis='coloraxis')), row=1, col=1)
@@ -193,10 +185,9 @@ def plot_percentiles(df, player_name='Harry Kane'):
                         width=bar_width*len(possession_stats),
                         marker=dict(color=possession_df['PR'], coloraxis='coloraxis')), row=5, col=1)
 
-    # Update the layout of the big plot
     fig.update_layout(
         height=3000,
-        width=1000,
+        width=900,
         coloraxis=dict(colorscale='RdYlGn', colorbar=dict(title='Percentile Rank')),
         bargap=0.05,
         bargroupgap=0.05,
