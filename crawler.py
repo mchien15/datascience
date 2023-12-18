@@ -85,7 +85,7 @@ def get_player_name(path):
 
 def crawl_player(player,player_file_name):
     print('Crawling...')
-    seasons = ['2022-2023','2021-2022']
+    seasons = ['2022-2023','2023-2024']
     for i in player:
         for year in seasons:
             player_link = 'https://fbref.com/en/players/'+i+'/matchlogs/'+year+'/keeper/'+i+'-Match-Logs'
@@ -262,6 +262,6 @@ def crawl_player(player,player_file_name):
 
 if __name__ == "__main__":
     path = '/home/asus/stuDYING/IT/DataScience/project/chromedriver'
-    player_file_name = '/home/asus/stuDYING/IT/DataScience/data/playerstats_primeira_liga.csv'
+    player_file_name = '/home/asus/stuDYING/IT/DataScience/data/playerstats_la_liga.csv'
     player = get_player_name(path)
     crawl_player(player,player_file_name)

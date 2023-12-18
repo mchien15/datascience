@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS datalake.data_big_5_leagues.all_leagues (
 
 ## Run the Streamlit app
 
-Open the new terminal, then run this command
+Open the new terminal or type `exit` twice, then run this command
 
 ```
 streamlit run app.py

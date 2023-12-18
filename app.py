@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit_nested_layout
 from utils import load_data, get_similar_players_cosine, plot_percentiles, compare_players
 
-st. set_page_config(layout="wide")
+st.set_page_config(layout="wide")
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
