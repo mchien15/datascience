@@ -19,6 +19,10 @@ This application also requires `Docker`, so if you haven't already installed it 
 ```
 docker compose -f docker-compose.yml up -d
 ```
+### Clean data (drop some replical columns)
+```
+python clean_data.py
+```
 ### Generate data and push them to MinIO
 ```
 python utils/export_data_to_datalake.py
@@ -39,6 +43,7 @@ CREATE SCHEMA IF NOT EXISTS datalake.data_big_5_leagues
 WITH (location = 's3://data-big-5-leagues/');
 
 CREATE TABLE IF NOT EXISTS datalake.data_big_5_leagues.all_leagues (
+    ID VARCHAR,
     Date VARCHAR,
     Name VARCHAR,
     Round VARCHAR,
