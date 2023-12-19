@@ -11,18 +11,18 @@ import plotly.subplots as sp
 import plotly.graph_objects as go
 import plotly.express as px
 
-stats_to_compare = {'FW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PassProg', 'AttPen', 'KP', 'PPA', 'SuccPct', 'CPA', 'TacklesAtt3rd', 'Press'],
-                    'WB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PassProg', 'ProgCarries', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'RB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PassProg', 'ProgCarries', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'LB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PassProg', 'ProgCarries', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'CB': ['PassAtt', 'CmpPct', 'PassProg', 'ProgCarries', 'CmpPct3', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'DM': ['PassAtt', 'CmpPct', 'PassProg', 'PassFinThird', 'KP', 'ProgCarries', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'CM': ['npxG', 'xA', 'SCA', 'Sh', 'PassAtt', 'CmpPct', 'PassProg', 'PassFinThird', 'KP', 'ProgCarries', 'SuccPct', 'CPA', 'Int', 'TklW', 'Blocks', 'TacklesMid3rd'],
-                    'AM': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PassAtt', 'CmpPct', 'PassProg', 'KP', 'ProgCarries', 'PPA', 'SuccPct', 'CPA', 'AttPen', 'TacklesAtt3rd', 'Press'],
-                    'LM': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'ProgCarries', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
-                    'RM': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'ProgCarries', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
-                    'RW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'ProgCarries', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
-                    'LW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'ProgCarries', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press']}
+stats_to_compare = {'FW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PrgP', 'AttPen', 'KP', 'PPA', 'SuccPct', 'CPA', 'TacklesAtt3rd', 'Pass', 'Int'],
+                    'WB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'RB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'LB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'CB': ['PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'CmpPct3', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'DM': ['PassAtt', 'CmpPct', 'PrgP', 'PassFinThird', 'KP', 'PrgC', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'CM': ['npxG', 'xA', 'SCA', 'Sh', 'PassAtt', 'CmpPct', 'PrgP', 'PassFinThird', 'KP', 'PrgC', 'SuccPct', 'CPA', 'Int', 'TklW', 'Blocks', 'TacklesMid3rd'],
+                    'AM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'PassAtt', 'CmpPct', 'PrgP', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'AttPen', 'TacklesAtt3rd', 'Press'],
+                    'LM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
+                    'RM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
+                    'RW': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
+                    'LW': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press']}
 
 
 @st.cache_data
