@@ -1,4 +1,4 @@
-# Find similar players using Cosine similarity
+# Soccer Players Data Analyst and Similar Players Finder
 
 ## Clone the repo
 ```
@@ -19,7 +19,7 @@ This application also requires `Docker`, so if you haven't already installed it 
 ```
 docker compose -f docker-compose.yml up -d
 ```
-### Clean data (drop some replical columns)
+### Clean data (drop replical columns, rename columns, convert csv files to parquet)
 ```
 python clean_data.py
 ```
@@ -36,7 +36,7 @@ docker exec -ti datalake-trino bash
 
 When you are already inside the `trino` container, run `trino` to enter the interactive mode
 
-After that, run the following command to register a new schema for the data:
+After that, copy and run this chunk of commands to register a new schema for the data:
 
 ```sql
 CREATE SCHEMA IF NOT EXISTS datalake.data_big_5_leagues WITH (location = 's3://data-big-5-leagues/');
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS datalake.data_big_5_leagues.all_leagues (
 
 ## Run the Streamlit app
 
-Open the new terminal or type `exit` twice, then run this command
+Open the new terminal or run `exit` twice, then run this command
 
 ```
 streamlit run Main_Page.py
