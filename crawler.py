@@ -97,11 +97,36 @@ def get_player_name(path):
         'cb45d9cb': 'Al-Ahli',   
     }
 
-    for team in saudi_dict:
+    league_1_dict = {
+        'e2d8892c': 'Paris-Saint-Germain',
+        '132ebc33': 'Nice',
+        'fd6114db': 'Monaco',
+        'cb188c0c': 'Lille',
+        'fb08dbb3': 'Brest',
+        '5725cc7b': 'Marseille',
+        'fd4e0f7d': 'Lens',
+        '7fdd64e0': 'Reims',
+        'c0d3eab4': 'Strasbourg',
+        '5c2737db': 'Le-Havre',
+        '281b0e73': 'Montpellier',
+        'd7a486cd': 'Nantes',
+        'b3072e00': 'Renness',
+        'f83960ae': 'Metz',
+        '3f8c4b5f': 'Toulouse',
+        'd53c0b06': 'Lyon',
+        'd2c87802': 'Lorient',
+        'd9676424': 'Clermont-Foot',
+        '5ae09109': 'Auxerre',
+        '7a54bb4f': 'Ajaccio',
+        '54195385': 'Troyes',
+        '69236f98': 'Angers'
+    }
+
+    for team in league_1_dict:
         for year in seasons:
             try:
-                browser.get('https://fbref.com/en/squads/'+team+'/'+year+'/'+saudi_dict[team]+'-Stats')
-                tbody = browser.find_element(By.XPATH, '//*[@id="stats_standard_70"]/tbody')
+                browser.get('https://fbref.com/en/squads/'+team+'/'+year+'/'+league_1_dict[team]+'-Stats')
+                tbody = browser.find_element(By.XPATH, '//*[@id="stats_standard_13"]/tbody')
 
                 elements = tbody.find_elements(By.TAG_NAME, 'tr')
                 for element in elements:
@@ -112,7 +137,7 @@ def get_player_name(path):
                         continue
                     player[id] = name1
             except:
-                print("Invalid Team", saudi_dict[team])
+                print("Invalid Team", league_1_dict[team])
     browser.quit()
     return player
 
@@ -295,6 +320,6 @@ def crawl_player(player,player_file_name):
 
 if __name__ == "__main__":
     path = '/home/asus/stuDYING/IT/DataScience/project/chromedriver'
-    player_file_name = '/home/asus/stuDYING/IT/DataScience/data/playerstats_saudi.csv'
+    player_file_name = '/home/asus/stuDYING/IT/DataScience/project/data/players/league_1.csv'
     player = get_player_name(path)
     crawl_player(player,player_file_name)
