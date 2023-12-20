@@ -6,7 +6,7 @@ from unidecode import unidecode
 def process_dataframe(df):
     pd.set_option('display.max_columns', None)
     
-    percentage_columns = ['CmpPct', 'CmpPct1', 'CmpPct2', 'CmpPct3', 'DribTackledPct', 'SuccPressPct', 'SuccPct', 'RecPct']
+    percentage_columns = ['CmpPct', 'CmpPct1', 'CmpPct2', 'CmpPct3', 'DribTackledPct', 'SuccPct', 'TkldPct']
     to_delete_columns = ['Round', 'Venue', 'Result', 'Opponent', 'Start']
     
     df = df.fillna(0)
@@ -14,7 +14,7 @@ def process_dataframe(df):
     df = df.drop_duplicates(subset=['Date', 'ID'])
 
     df = df.drop(to_delete_columns, axis=1)
-    df = df.drop(columns=['xAG.1','PrgC.1','PrgP.1'])
+    # df = df.drop(columns=['xAG.1','PrgC.1','PrgP.1'])
     df['Pos'] = df['Pos'].apply(lambda x: x.split(','))
     
     for col in percentage_columns:

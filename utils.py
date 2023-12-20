@@ -18,11 +18,11 @@ stats_to_compare = {'FW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PrgP', 'AttPen', 'KP
                     'CB': ['PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'CmpPct3', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
                     'DM': ['PassAtt', 'CmpPct', 'PrgP', 'PassFinThird', 'KP', 'PrgC', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
                     'CM': ['npxG', 'xA', 'SCA', 'Sh', 'PassAtt', 'CmpPct', 'PrgP', 'PassFinThird', 'KP', 'PrgC', 'SuccPct', 'CPA', 'Int', 'TklW', 'Blocks', 'TacklesMid3rd'],
-                    'AM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'PassAtt', 'CmpPct', 'PrgP', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'AttPen', 'TacklesAtt3rd', 'Press'],
-                    'LM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
-                    'RM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
-                    'RW': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press'],
-                    'LW': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd', 'Press']}
+                    'AM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'PassAtt', 'CmpPct', 'PrgP', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'AttPen', 'TacklesAtt3rd'],
+                    'LM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd'],
+                    'RM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd'],
+                    'RW': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd'],
+                    'LW': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd']}
 
 
 @st.cache_data
@@ -106,11 +106,11 @@ def compare_players(df, player1, player2, pos=None):
     title = dict(
         title_name=player1 + ' - ' + position,
         title_color='#B6282F',
-        subtitle_name=df[df['Name'] == player1]['Squad'].values[0],
+        subtitle_name=df[df['Name'] == player1]['Squad'].values[0][0],
         subtitle_color='#B6282F',
         title_name_2=player2 + ' - ' + position,
         title_color_2='#344D94',
-        subtitle_name_2=df[df['Name'] == player2]['Squad'].values[0],
+        subtitle_name_2=df[df['Name'] == player2]['Squad'].values[0][0],
         subtitle_color_2='#344D94',
         title_fontsize=18,
         subtitle_fontsize=15,
@@ -123,9 +123,11 @@ def compare_players(df, player1, player2, pos=None):
                             title=title,
                             compare=True)
 
+    fig.set_size_inches(18.5, 10.5, forward=True)
+
     return fig
 
-def plot_percentiles(df, player_name='Harry Kane'):
+def plot_percentiles(df, player_name='Harry Kane', width_size=900, height_size=3000):
 
     player_row = df[df['Name'] == player_name]
     player_position = player_row['Pos'].values[0][0]
@@ -190,8 +192,9 @@ def plot_percentiles(df, player_name='Harry Kane'):
                         marker=dict(color=possession_df['PR'], coloraxis='coloraxis')), row=5, col=1)
 
     fig.update_layout(
-        height=3000,
-        width=900,
+        height=height_size,
+        width=width_size,
+        title_text=f"Percentile Rank for {player_name}",
         coloraxis=dict(colorscale='RdYlGn', colorbar=dict(title='Percentile Rank')),
         bargap=0.05,
         bargroupgap=0.05,

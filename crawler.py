@@ -64,11 +64,44 @@ def get_player_name(path):
         'f5b64cb1':'Santa-Clara'
     }
 
-    for team in laliga_dict:
+    seriea_dict = {
+        'd609edc0': 'Internazionale',
+        'e0652b02': 'Juventus',
+        'dc56fe14': 'Milan',
+        '1d8099f8': 'Bologna',
+        'd48ad4ff': 'Napoli',
+        '421387cf': 'Fiorentina',
+        '922493f3': 'Atalanta',
+        'cf74a709': 'Roma',
+        '105360fe': 'Torino',
+        '21680aa4': 'Monza',
+        '7213da33': 'Lazio',
+        'ffcbe334': 'Lecce',
+        '6a7ad59d': 'Frosinone',
+        '658bf2de': 'Genoa',
+        'e2befd26': 'Sassuolo',
+        'c4260e09': 'Cagliari',
+        '04eea015': 'Udinese',
+        'a3d88bd8': 'Empoli',
+        '0e72edf2': 'Hellas-Verona',
+        'c5577084': 'Salernitana',
+        '68449f6d': 'Spezia',
+        '9aad3a77': 'Cremonese',
+        '8ff9e3b3': 'Sampdoria'
+    }
+
+    saudi_dict = {
+        '972e2539': 'Al-Hilal',
+        '6baef27f': 'Al-Nassr',
+        'e00d111d': 'Al-Ittihad',
+        'cb45d9cb': 'Al-Ahli',   
+    }
+
+    for team in saudi_dict:
         for year in seasons:
             try:
-                browser.get('https://fbref.com/en/squads/'+team+'/'+year+'/'+laliga_dict[team]+'-Stats')
-                tbody = browser.find_element(By.XPATH, '//*[@id="stats_standard_12"]/tbody')
+                browser.get('https://fbref.com/en/squads/'+team+'/'+year+'/'+saudi_dict[team]+'-Stats')
+                tbody = browser.find_element(By.XPATH, '//*[@id="stats_standard_70"]/tbody')
 
                 elements = tbody.find_elements(By.TAG_NAME, 'tr')
                 for element in elements:
@@ -79,7 +112,7 @@ def get_player_name(path):
                         continue
                     player[id] = name1
             except:
-                print("Invalid Team", laliga_dict[team])
+                print("Invalid Team", saudi_dict[team])
     browser.quit()
     return player
 
@@ -107,7 +140,7 @@ def crawl_player(player,player_file_name):
                 df = df.rename(columns={"Prog": "PassProg"})
                 df.fillna(0, inplace=True)
 
-                time.sleep(3)
+                time.sleep(5)
                 new_player_link = player_link.replace("keeper", "gca")
                 df_2 = pd.read_html(new_player_link, header=1)[0]
                 df_2 = df_2.drop(columns=['Match Report'])
@@ -140,7 +173,7 @@ def crawl_player(player,player_file_name):
                     columns={"Def.1": "DefGoal"})
                 df_2.fillna(0, inplace=True)
 
-                time.sleep(3)
+                time.sleep(5)
                 new_player_link = player_link.replace("keeper", "defense")
                 df_3 = pd.read_html(new_player_link, header=1)[0]
                 df_3 = df_3.drop(columns=['Match Report'])
@@ -171,7 +204,7 @@ def crawl_player(player,player_file_name):
                     columns={"Sh": "BlockSh"})
                 df_3.fillna(0, inplace=True)
 
-                time.sleep(3)
+                time.sleep(5)
                 new_player_link = player_link.replace("keeper", "possession")
                 df_4 = pd.read_html(new_player_link, header=1)[0]
                 df_4 = df_4.drop(columns=['Match Report'])
@@ -192,7 +225,7 @@ def crawl_player(player,player_file_name):
                 df_4 = df_4.rename(columns={"Prog.1": "ProgPassRec"})
                 df_4.fillna(0, inplace=True)
 
-                time.sleep(3)
+                time.sleep(5)
                 new_player_link = player_link.replace("keeper", "summary")
                 df_5 = pd.read_html(new_player_link, header=1)[0]
                 df_5 = df_5.drop(columns=['Match Report'])
@@ -262,6 +295,6 @@ def crawl_player(player,player_file_name):
 
 if __name__ == "__main__":
     path = '/home/asus/stuDYING/IT/DataScience/project/chromedriver'
-    player_file_name = '/home/asus/stuDYING/IT/DataScience/data/playerstats_la_liga.csv'
+    player_file_name = '/home/asus/stuDYING/IT/DataScience/data/playerstats_saudi.csv'
     player = get_player_name(path)
     crawl_player(player,player_file_name)

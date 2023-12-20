@@ -26,6 +26,8 @@ st.markdown(f"<h2 style='text-align: center; color: black;'>{player_name}</h2>",
 
 st.markdown(f"<h3 style='text-align: center; color: grey;'>{position} - {squad}</h2>", unsafe_allow_html=True)
 
+st.header('')
+
 outer_cols = st.columns([30,30], gap='large')
 
 similar_players_cosine = get_similar_players_cosine(scaled_df, similarity_df, player_name, top_n)
@@ -46,21 +48,21 @@ with outer_cols[0]:
     st.plotly_chart(plot_percentiles(df, player_name))
 
 with outer_cols[1]:
-    st.write("Similar Players (Cosine Similarity):")
+    st.markdown("**Similar Players (Cosine Similarity):**")
 
-    colms = st.columns(6)
+    colms = st.columns([1, 3, 3, 5, 3, 3])
     fields = ["", 'Name', 'Position', 'Squad', 'Similarity Score', '']
     for col, field_name in zip(colms, fields):
             # header
         col.write(field_name)
 
     for i, name in enumerate(similar_players_cosine['Name']):
-        col1, col2, col3, col4, col5, col6 = st.columns(6)
+        col1, col2, col3, col4, col5, col6 = st.columns([1, 3, 3, 5, 3, 3])
 
         col1.write(i + 1)
         col2.write(name)
         col3.write(str(similar_players_cosine[similar_players_cosine['Name'] == name]['Position'].values[0]))
-        col4.write(similar_players_cosine[similar_players_cosine['Name'] == name]['Squad'].values[0])
+        col4.write(str(similar_players_cosine[similar_players_cosine['Name'] == name]['Squad'].values[0]))
         col5.write(f"{similar_players_cosine[similar_players_cosine['Name'] == name]['Similarity'].values[0]:.3f}")
 
         placeholder = col6.empty()
