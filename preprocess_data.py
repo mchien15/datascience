@@ -13,6 +13,14 @@ def process_dataframe(df):
 
     df = df.drop_duplicates(subset=['Date', 'ID'])
 
+    zero_percentage = (df == 0).mean(axis=1)
+
+    threshold = 0.8
+
+    rows_to_drop = zero_percentage[zero_percentage > threshold].index
+
+    df = df.drop(rows_to_drop)
+
     df = df.drop(to_delete_columns, axis=1)
     # df = df.drop(columns=['xAG.1','PrgC.1','PrgP.1'])
     df['Pos'] = df['Pos'].apply(lambda x: x.split(','))
@@ -57,7 +65,7 @@ def process_dataframe(df):
     processed_df = test.drop(['Min_x'], axis=1)
     processed_df = processed_df.rename(columns={'Min_y': 'Min'})
 
-    processed_df = processed_df[processed_df['Min'] >= 1000]
+    processed_df = processed_df[processed_df['Min'] >= 1500]
     
     for col in numeric_columns:
         processed_df[col] = processed_df[col] / processed_df['Min'] * 90
@@ -65,15 +73,15 @@ def process_dataframe(df):
     #apply unidecode to remove all the accent in the name
     processed_df['Name'] = processed_df['Name'].apply(lambda x: unidecode(x))
 
-    zero_percentage = (processed_df == 0).mean(axis=1)
+    # zero_percentage = (processed_df == 0).mean(axis=1)
 
-    threshold = 0.75
+    # threshold = 0.75
 
-    rows_to_drop = zero_percentage[zero_percentage > threshold].index
+    # rows_to_drop = zero_percentage[zero_percentage > threshold].index
 
-    df_filtered = processed_df.drop(rows_to_drop)
+    # df_filtered = processed_df.drop(rows_to_drop)
 
-    return df_filtered
+    return processed_df
 
 #argparse to input the path of the folder contains csv file, process all the file in that folder, concatenate them and save it as a csv file
 if __name__ == '__main__':

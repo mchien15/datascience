@@ -175,27 +175,27 @@ def plot_percentiles(df, player_name='Harry Kane', width_size=900, height_size=3
 
     fig = sp.make_subplots(rows=5, cols=1, shared_xaxes=True, vertical_spacing=0.02, subplot_titles=('Summary Stats', 'Passing Stats', 'Goal and Shot Creation Stats', 'Defensive Action Stats', 'Possession Stats'))
 
-    fig.add_trace(go.Bar(x=summary_df['PR'], y=summary_df['Metric'], orientation='h',
+    fig.add_trace(go.Bar(x=summary_df['PR'], y=summary_df['Metric'].apply(lambda x: f"<b>{x}</b>"), orientation='h',
                         width=bar_width*len(summary_stats),
-                        marker=dict(color=summary_df['PR'], coloraxis='coloraxis')), row=1, col=1)
-    fig.add_trace(go.Bar(x=passing_df['PR'], y=passing_df['Metric'], orientation='h',
+                        marker=dict(color=summary_df['PR'], coloraxis='coloraxis'), text=summary_df['PR'].apply(lambda x: f"<b>{x:.2f}</b>"), textposition='outside'), row=1, col=1)
+    fig.add_trace(go.Bar(x=passing_df['PR'], y=passing_df['Metric'].apply(lambda x: f"<b>{x}</b>"), orientation='h',
                         width=bar_width*len(passing_stats),
-                        marker=dict(color=passing_df['PR'], coloraxis='coloraxis')), row=2, col=1)
-    fig.add_trace(go.Bar(x=goal_df['PR'], y=goal_df['Metric'], orientation='h',
+                        marker=dict(color=passing_df['PR'], coloraxis='coloraxis'), text=passing_df['PR'].apply(lambda x: f"<b>{x:.2f}</b>"), textposition='outside'), row=2, col=1)
+    fig.add_trace(go.Bar(x=goal_df['PR'], y=goal_df['Metric'].apply(lambda x: f"<b>{x}</b>"), orientation='h',
                         width=bar_width*len(goal_stats),
-                        marker=dict(color=goal_df['PR'], coloraxis='coloraxis')), row=3, col=1)
-    fig.add_trace(go.Bar(x=defensive_df['PR'], y=defensive_df['Metric'], orientation='h',
+                        marker=dict(color=goal_df['PR'], coloraxis='coloraxis'), text=goal_df['PR'].apply(lambda x: f"<b>{x:.2f}</b>"), textposition='outside'), row=3, col=1)
+    fig.add_trace(go.Bar(x=defensive_df['PR'], y=defensive_df['Metric'].apply(lambda x: f"<b>{x}</b>"), orientation='h',
                         width=bar_width*len(defensive_stats),
-                        marker=dict(color=defensive_df['PR'], coloraxis='coloraxis')), row=4, col=1)
-    fig.add_trace(go.Bar(x=possession_df['PR'], y=possession_df['Metric'], orientation='h',
+                        marker=dict(color=defensive_df['PR'], coloraxis='coloraxis'), text=defensive_df['PR'].apply(lambda x: f"<b>{x:.2f}</b>"), textposition='outside'), row=4, col=1)
+    fig.add_trace(go.Bar(x=possession_df['PR'], y=possession_df['Metric'].apply(lambda x: f"<b>{x}</b>"), orientation='h',
                         width=bar_width*len(possession_stats),
-                        marker=dict(color=possession_df['PR'], coloraxis='coloraxis')), row=5, col=1)
+                        marker=dict(color=possession_df['PR'], coloraxis='coloraxis'), text=possession_df['PR'].apply(lambda x: f"<b>{x:.2f}</b>"), textposition='outside'), row=5, col=1)
 
     fig.update_layout(
         height=height_size,
         width=width_size,
         title_text=f"Percentile Rank for {player_name}",
-        coloraxis=dict(colorscale='RdYlGn', colorbar=dict(title='Percentile Rank')),
+        coloraxis=dict(colorscale='RdYlGn'),
         bargap=0.05,
         bargroupgap=0.05,
         font=dict(
@@ -224,9 +224,9 @@ def plot_violin_and_scatter(df, metric_1, metric_2):
                     size='Min', 
                     width=1800, height=800,)
 
-    fig_violin_1 = px.violin(df[metric_1], orientation='h', points='all')
+    fig_violin_1 = px.violin(df[metric_1], orientation='h', points='outliers')
 
-    fig_violin_2 = px.violin(df[metric_2], points='all')
+    fig_violin_2 = px.violin(df[metric_2], points='outliers')
 
     fig.add_traces(fig_violin_1.data, 2, 2)
 

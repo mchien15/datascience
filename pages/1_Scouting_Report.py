@@ -45,7 +45,7 @@ show_more = st.session_state["show_more"]
 similar_players_cosine = get_similar_players_cosine(scaled_df, similarity_df, player_name, top_n)
 
 with outer_cols[0]:
-    st.plotly_chart(plot_percentiles(df, player_name))
+    st.plotly_chart(plot_percentiles(df, player_name, width_size=1000))
 
 with outer_cols[1]:
     st.markdown("**Similar Players (Cosine Similarity):**")
