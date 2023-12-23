@@ -24,7 +24,7 @@ st.header('')
 
 st.markdown(f"<h2 style='text-align: center; color: black;'>{player_name}</h2>", unsafe_allow_html=True)
 
-st.markdown(f"<h3 style='text-align: center; color: grey;'>{position} - {squad}</h2>", unsafe_allow_html=True)
+st.markdown(f"<h3 style='text-align: center; color: grey;'>{str(df[df['Name'] == player_name]['Pos'].values[0])} - {squad}</h2>", unsafe_allow_html=True)
 
 st.header('')
 

@@ -86,4 +86,4 @@ type_of_stats = {'Passing': ['Cmp', 'PassAtt', 'CmpPct', 'PassTotDist', 'PassPrg
                  'Goal and Shot Creation': ['SCA', 'PassLiveShot', 'PassDeadShot', 'TO', 'ShLSh', 'Fld', 'DefShot', 'GCA', 'PassLiveGoal', 'PassDeadGoal', 'TO1', 'ShGoal', 'FldGoal', 'DefGoal'],
                  'Defensive Actions': ['Tkl', 'TklW', 'TacklesDef3rd', 'TacklesMid3rd', 'TacklesAtt3rd', 'DribTackled', 'DribContest', 'DribTackledPct', 'Lost', 'Blocks', 'BlockSh', 'Pass', 'Int', 'TklPlusInt', 'Clr', 'Err'],
                  'Possession': ['Touches', 'DefPen', 'TouchDef3rd', 'TouchMid3rd', 'TouchAtt3rd', 'AttPen', 'Live', 'Succ', 'Att', 'SuccPct', 'Tkld', 'TkldPct', 'Carries', 'TotDist', 'PrgDist', 'PrgC', 'CarriesFinThird', 'CPA', 'Mis', 'Dis', 'Rec'],
-                 'Summary': ['PrgR', 'Gls', 'PK', 'PKatt', 'Sh', 'SoT', 'CrdY', 'CrdR', 'xG', 'npxG']}
+                 'Summary': ['Gls', 'Ast', 'PK', 'PKatt', 'Sh', 'SoT', 'CrdY', 'CrdR', 'Touches', 'xG', 'npxG', 'SCA', 'GCA', 'PassAtt', 'CmpPct', 'Carries', 'Att', 'SuccPct']}

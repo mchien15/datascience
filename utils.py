@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.neighbors import NearestNeighbors
 from soccerplots.radar_chart import Radar
 from prc import process_data
@@ -11,18 +12,18 @@ import plotly.subplots as sp
 import plotly.graph_objects as go
 import plotly.express as px
 
-stats_to_compare = {'FW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PrgP', 'AttPen', 'KP', 'PPA', 'SuccPct', 'CPA', 'TacklesAtt3rd', 'Pass', 'Int'],
-                    'WB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'RB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'LB': ['CrsPA', 'xA', 'SCA', 'PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'CB': ['PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'CmpPct3', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'DM': ['PassAtt', 'CmpPct', 'PrgP', 'PassFinThird', 'KP', 'PrgC', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
-                    'CM': ['npxG', 'xA', 'SCA', 'Sh', 'PassAtt', 'CmpPct', 'PrgP', 'PassFinThird', 'KP', 'PrgC', 'SuccPct', 'CPA', 'Int', 'TklW', 'Blocks', 'TacklesMid3rd'],
-                    'AM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'PassAtt', 'CmpPct', 'PrgP', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'AttPen', 'TacklesAtt3rd'],
-                    'LM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd'],
-                    'RM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd'],
-                    'RW': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd'],
-                    'LW': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'Att', 'TacklesAtt3rd']}
+stats_to_compare = {'FW': ['Gls', 'xG', 'xA', 'SCA', 'Sh', 'PrgP', 'TO', 'AttPen', 'KP', 'PPA', 'SuccPct', 'CPA', 'Rec', 'TacklesAtt3rd', 'Pass', 'Int', 'TklW'],
+                    'WB': ['CrsPA', 'xA', 'SCA', 'TO', 'PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'RB': ['CrsPA', 'xA', 'SCA', 'TO', 'PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'LB': ['CrsPA', 'xA', 'SCA', 'TO', 'PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'SuccPct', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr'],
+                    'CB': ['PassAtt', 'CmpPct', 'PrgP', 'PrgC', 'CmpPct3', 'CmpPct2', 'PassPrgDist', 'Touches', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr', 'Err'],
+                    'DM': ['PassAtt', 'CmpPct', 'CmpPct1', 'CmpPct2', 'PrgP', 'PassPrgDist', 'PassFinThird', 'KP', 'PPA', 'Succ', 'PrgC', 'Tkl', 'TklW', 'Int', 'Blocks', 'Clr', 'Err'],
+                    'CM': ['npxG', 'xA', 'SCA', 'Sh', 'PassAtt', 'CmpPct', 'CmpPct1', 'CmpPct2', 'PrgP', 'PassFinThird', 'KP', 'PrgC', 'SuccPct', 'CPA', 'Int', 'TklW', 'Blocks', 'TacklesMid3rd'],
+                    'AM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'PassAtt', 'CmpPct', 'PrgP', 'KP', 'PrgC', 'PPA', 'SuccPct', 'CPA', 'AttPen', 'TacklesAtt3rd', 'Int', 'Blocks'],
+                    'LM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'AttPen', 'PPA', 'SuccPct', 'CPA', 'Att', 'Fld', 'TacklesAtt3rd', 'Int', 'Blocks'],
+                    'RM': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'AttPen', 'PPA', 'SuccPct', 'CPA', 'Att', 'Fld', 'TacklesAtt3rd', 'Int', 'Blocks'],
+                    'RW': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'AttPen', 'PPA', 'SuccPct', 'CPA', 'Att', 'Fld',  'TacklesAtt3rd', 'Int', 'Blocks'],
+                    'LW': ['Gls', 'xG', 'xA', 'SCA', 'TO', 'Sh', 'CrsPA', 'PassAtt', 'CmpPct', 'KP', 'PrgC', 'AttPen', 'PPA', 'SuccPct', 'CPA', 'Att', 'Fld', 'TacklesAtt3rd', 'Int', 'Blocks']}
 
 
 @st.cache_data
@@ -63,7 +64,7 @@ def get_similar_players_knn(df, player_name, top_n=10):
     numerical_cols = df.select_dtypes(include=['float64', 'int64']).columns
     numerical_cols = numerical_cols[numerical_cols != 'Min']
 
-    scaler = StandardScaler()
+    scaler = MinMaxScaler()
     df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
 
     knn = NearestNeighbors(n_neighbors=top_n + 1, metric='euclidean')
@@ -72,13 +73,13 @@ def get_similar_players_knn(df, player_name, top_n=10):
     player_index = df[df['Name'] == player_name].index[0]
     _, indices = knn.kneighbors(df.iloc[player_index][numerical_cols].values.reshape(1, -1))
 
-    similar_players_df = df.iloc[indices[0][1:top_n+1]][['Name', 'Pos', 'Squad']]
+    similar_players_df = df.iloc[indices[0][1:top_n+1]][['ID', 'Name', 'Pos', 'Squad']]
 
     similar_players_df.reset_index(drop=True, inplace=True)
 
     similar_players_df.index += 1
 
-    similar_players_df.columns = ['Name', 'Position', 'Squad']
+    similar_players_df.columns = ['ID', 'Name', 'Position', 'Squad']
 
     return similar_players_df
 

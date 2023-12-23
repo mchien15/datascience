@@ -11,7 +11,7 @@ def process_dataframe(df):
     
     df = df.fillna(0)
 
-    df = df.drop_duplicates(subset=['Date', 'ID'])
+    # df = df.drop_duplicates(subset=['Date', 'ID'])
 
     zero_percentage = (df == 0).mean(axis=1)
 
