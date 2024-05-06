@@ -52,17 +52,16 @@ def process_dataframe(df):
     df = df.drop(['Pos_x', 'Squad_x'], axis=1)
     df = df.rename(columns={'Pos_y': 'Pos', 'Squad_y': 'Squad'})
     
-    test = df.groupby(['ID', 'Min_y']).agg({
+    temp = df.groupby(['ID', 'Min_y']).agg({
         'Name': 'first',
         'Squad': 'first',
         'Min_x': 'sum',
-        # 'Pos': lambda x: set([item for sublist in x for item in sublist]),
         'Pos': 'first',
         **{col: 'sum' for col in numeric_columns},
         **{col: 'mean' for col in percentage_columns}
     }).reset_index()
     
-    processed_df = test.drop(['Min_x'], axis=1)
+    processed_df = temp.drop(['Min_x'], axis=1)
     processed_df = processed_df.rename(columns={'Min_y': 'Min'})
 
     processed_df = processed_df[processed_df['Min'] >= 1500]

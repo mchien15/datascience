@@ -24,6 +24,19 @@ services:
       POSTGRES_USER: hive
       POSTGRES_PASSWORD: hive
       POSTGRES_DB: metastore
+    ports:
+      - "5431:5431"
+
+  data_warehouse:
+    container_name: data_warehouse
+    image: postgres:11
+    hostname: dw_postgre
+    environment:
+      POSTGRES_USER: datawarehouse
+      POSTGRES_PASSWORD: datawarehouse
+      POSTGRES_DB: dw
+    ports:
+      - "5432:5432"
 
   # Expose service to get metadata
   hive-metastore:
