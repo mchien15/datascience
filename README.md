@@ -28,6 +28,9 @@ python clean_data.py
 python utils/export_data_to_datalake.py
 ```
 
+![](imgs/minio_object_storage.png)
+
+
 ### Create data schema
 After pushing your files to `MinIO`, please run the following command to execute the trino container:
 ```
@@ -152,3 +155,23 @@ streamlit run Main_Page.py
 ```
 
 Visit the URL displayed in the terminal (usually http://localhost:8501) to interact with the app
+
+### Some of the features of the app
+
+#### Scouting Report and Similar Players Finder
+
+![](imgs/scouting_report.png)
+
+#### Radar chart for players comparison
+
+![](imgs/compare_players.png)
+
+For each position, there will be different stats to be used to compare the players. For examples, these are the plots for comparing Messi - Neymar and Thiago Silva - Van Dijk
+
+![](imgs/messi_neymar.png)
+
+![](imgs/silva_vandijk.png)
+
+#### Scatter plot for metrics comparison
+
+![](imgs/scatter_plot.png)
